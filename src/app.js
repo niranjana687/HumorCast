@@ -8,7 +8,7 @@ const port = 3000;
 
 //Define paths for express config
 const publicDirectoryPath = path.join(__dirname, '../public');
-const viewPath = path.join(__dirname, '../views');
+const viewPath = path.join(__dirname, '../templates/views');
 
 //Setup handlebars engine and views location
 app.set('view engine', 'hbs');
