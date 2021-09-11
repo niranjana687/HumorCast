@@ -1,6 +1,8 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
+const geocode = require('./utils/geocode.js');
+const forecast = require('./utils/forecast.js');
 
 const app = express();
 
@@ -47,13 +49,60 @@ app.get('/help', (request, response) => {
 
 //weather route
 app.get('/weather', (request, response) => {
-    response.send({
-        forecast: 'pleasant warm weather',
-        location: 'kochi',
+    if (!request.query.address) {
+        return response.send({
+            error: 'Please provide an address!',
+        });
+    }
+    // geocode(request.query.address, forecast(geocode.latitude, geocode.longitude));
+    
+    geocode(request.query.address, (error, {latitude, longitude, location} = {} ) => {
+        
+        if (error) {
+            return response.send(
+                {error: error});
+        }
+
+        forecast(latitude, longitude, (error, forecastData) => {
+            
+            if (error) {
+                return response.send(
+                    {error: error});
+            }
+            response.send({
+                location: location,
+                description: forecastData,
+            });
+        });
     });
 });
 
+//query string tryout
+app.get('/products', (request, response) => {
+    if (!request.query.search) {
+        return response.send({
+            error: 'Please provide a search parameter!',
+        });
+    }
+    console.log(request.query);
+    response.send({
+        products: [],
+    });
+})
 
+//missing help article
+app.get('help/*', (request, response) => {
+    response.render('404', {
+        error: '404: Page not found',
+    });
+});
+
+//error page router
+app.get('*', (request, response) => {
+    response.render('404', {
+        error: '404: Page not found',
+    });
+});
 
 app.listen(port, () => {
     console.log(`We are listening at http://localhost:${port}`);
