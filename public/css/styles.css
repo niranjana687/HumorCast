@@ -55,3 +55,16 @@ input {
     padding: 8px;
     border: 1px solid;
 }
+h4 {
+    font-size: 32px;
+    text-emphasis: none;
+    font-weight: 20;
+    ;
+}
+p#joke{
+    border-top: 1px solid #eeeeee;
+    margin-top: 1px;
+    padding: 1px 0;
+    border-bottom: 1px solid #eeeeee;
+    
+}

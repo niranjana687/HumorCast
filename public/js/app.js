@@ -1,12 +1,12 @@
 
 console.log('client side javascript is loaded');
 
-
-
 const weatherForm = document.querySelector('form');
 const search = document.querySelector('input');
 const messageOne = document.querySelector('#message-1');
 const messageTwo = document.querySelector('#message-2');
+const jokeHeader = document.querySelector('h4');
+const joke = document.querySelector('#joke');
 
 weatherForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -27,19 +27,26 @@ weatherForm.addEventListener('submit', (e) => {
     })
 });
 
+fetch("https://jokes-by-api-ninjas.p.rapidapi.com/v1/jokes", {
+	"method": "GET",
+	"headers": {
+		"x-rapidapi-host": "jokes-by-api-ninjas.p.rapidapi.com",
+		"x-rapidapi-key": "d84d3570cbmsh4cf2e7f5a3d5ce8p1e433ejsnde64c49690bc"
+	}
+})
+.then(response => {
+    response.json().then((data) => {
+        if (data.error) {
+            joke.textContent = 'Uhoh, this is not funny';
+        } else {
+            console.log(data[[0]]);
+            jokeHeader.textContent = 'The funny part...';
+            joke.textContent = data[[0]].joke;
+        }
+    })
+	
+})
+
 });
 
-// fetch("https://matchilling-chuck-norris-jokes-v1.p.rapidapi.com/jokes/random", {
-// 	"method": "GET",
-// 	"headers": {
-// 		"accept": "application/json",
-// 		"x-rapidapi-key": "SIGN-UP-FOR-KEY",
-// 		"x-rapidapi-host": "matchilling-chuck-norris-jokes-v1.p.rapidapi.com"
-// 	}
-// })
-// .then(response => {
-// 	console.log(response);
-// })
-// .catch(err => {
-// 	console.error(err);
-// });
+
